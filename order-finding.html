@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Finding — QC</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #f7f5f1;
+            color: #4a4a4a;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 300;
+            font-size: 17px;
+            line-height: 1.85;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem 2.5rem;
+            border-bottom: 1px solid #e4e0d9;
+        }
+
+        nav a {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #2a2a2a;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        nav a:hover {
+            color: #2a4a7f;
+        }
+
+        .content {
+            max-width: 660px;
+            margin: 0 auto;
+            padding: 3.5rem 2rem 4rem;
+        }
+
+        .chapter-header {
+            margin-bottom: 3rem;
+        }
+
+        .chapter-header h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.6rem;
+            font-weight: 400;
+            color: #2a2a2a;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+        }
+
+        .section-heading {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #9a938a;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            margin-top: 2.8rem;
+            font-variant: small-caps;
+        }
+
+        .section-heading:first-of-type {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 1.4rem;
+        }
+
+        .math-display {
+            background: #fff;
+            border-left: 3px solid #2a4a7f;
+            padding: 1.6rem 1.8rem;
+            margin: 1.8rem 0;
+            border-radius: 0 4px 4px 0;
+            overflow-x: auto;
+        }
+
+        .math-display p {
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .think-break {
+            background: #f0ede6;
+            border-top: 1px solid #c8b89a;
+            border-bottom: 1px solid #c8b89a;
+            padding: 2rem 2rem;
+            margin: 2.5rem 0;
+            position: relative;
+        }
+
+        .think-break-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: #a09882;
+            margin-bottom: 1.2rem;
+            font-weight: 400;
+        }
+
+        .think-break-inner {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .think-break-text {
+            flex: 1;
+        }
+
+        .think-break-text .question {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 20px;
+            color: #3a3a3a;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+
+        .think-break-text .hint {
+            font-size: 0.85rem;
+            color: #8a8278;
+        }
+
+        .think-break-portrait {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .think-break-portrait .circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #c8b89a;
+        }
+
+        .think-break-portrait .name {
+            font-size: 0.75rem;
+            color: #8a8278;
+            letter-spacing: 0.04em;
+        }
+
+        .placeholder-box {
+            background: #edeae4;
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 1.8rem 0;
+            text-align: center;
+        }
+
+        .placeholder-box p {
+            font-style: italic;
+            color: #9a938a;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e4e0d9;
+        }
+
+        .bottom-nav a,
+        .bottom-nav span {
+            font-size: 0.88rem;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .bottom-nav span {
+            color: #c0b8ad;
+            cursor: default;
+        }
+
+        @media (max-width: 540px) {
+            .content { padding: 2.5rem 1.5rem 3rem; }
+            .chapter-header h1 { font-size: 2rem; }
+            nav { padding: 1rem 1.5rem; }
+            .think-break-inner { flex-direction: column-reverse; align-items: flex-start; }
+            .think-break-portrait { flex-direction: row; gap: 0.8rem; align-items: center; }
+            .think-break-portrait .circle { width: 50px; height: 50px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">← QC</a>
+    </nav>
+
+    <div class="content">
+        <div class="chapter-header">
+            <h1>Order Finding</h1>
+        </div>
+
+        <div class="section-heading">The Classical Problem</div>
+
+        <p>First, let's briefly state the classical order finding problem. We are given two positive integers, $x$ and $N$, which are coprime (meaning $\gcd(x, N) = 1$). We want to find the order of $x$ modulo $N$. The order is defined as the smallest positive integer $r$ such that:</p>
+
+        <div class="math-display">
+            <p>$$x^r \equiv 1 \pmod{N}$$</p>
+        </div>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">Why is there reason to expect that the quantum phase estimation algorithm could be useful here?</div>
+                    <div class="hint">Think about what phase estimation actually does before reading further.</div>
+                </div>
+                <div class="think-break-portrait">
+                    <div class="circle"></div>
+                    <div class="name">Kitaev</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-heading">Constructing the Unitary</div>
+
+        <p>If we are going to use the quantum phase estimation algorithm to find $r$, we need to invent a unitary operator $U$ that encodes this modular arithmetic, and we need to figure out its eigenvalues and eigenvectors. Remember, the quantum phase estimation algorithm takes as input a unitary operator $U$ and an eigenvector $|u\rangle$, and outputs an estimate for the phase of the corresponding eigenvalue $\theta$, where the eigenvalue $\lambda = e^{2\pi i\theta}$ with $0 \leq \theta \leq 1$.</p>
+
+        <div class="placeholder-box">
+            <p>[More content to be added here]</p>
+        </div>
+
+        <div class="bottom-nav">
+            <span>← Phase Estimation</span>
+            <span>Factoring →</span>
+        </div>
+    </div>
+</body>
+</html>
