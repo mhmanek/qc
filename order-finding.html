@@ -234,19 +234,107 @@
                     <div class="question">Why is there reason to expect that the quantum phase estimation algorithm could be useful here?</div>
                     <div class="hint">Think about what phase estimation actually does before reading further.</div>
                 </div>
-                <div class="think-break-portrait">
-                    <div class="circle"></div>
-                    <div class="name">Kitaev</div>
-                </div>
             </div>
         </div>
 
         <div class="section-heading">Constructing the Unitary</div>
 
-        <p>If we are going to use the quantum phase estimation algorithm to find $r$, we need to invent a unitary operator $U$ that encodes this modular arithmetic, and we need to figure out its eigenvalues and eigenvectors. Remember, the quantum phase estimation algorithm takes as input a unitary operator $U$ and an eigenvector $|u\rangle$, and outputs an estimate for the phase of the corresponding eigenvalue $\theta$, where the eigenvalue $\lambda = e^{2\pi i\theta}$ with $0 \leq \theta \leq 1$.</p>
+        <p>Remember, the quantum phase estimation algorithm takes as input a unitary operator $U$ and an eigenvector $|u\rangle$, and outputs an estimate for the phase of the corresponding eigenvalue $\theta$, where the eigenvalue $\lambda = e^{2\pi i\theta}$ with $0 \leq \theta \leq 1$.
+        <br>Hence, if we are going to use the quantum phase estimation algorithm to find $r$, we need to invent a unitary operator $U$ that encodes this modular arithmetic, and we need to figure out its eigenvalues and eigenvectors.</p>
 
-        <div class="placeholder-box">
-            <p>[More content to be added here]</p>
+        <p>To kick things off, let's figure out how this operator should behave.</p>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">How would you define the action of a unitary operator $U$ on a general computational basis state $|y\rangle$ (where $0 \leq y < N$) such that applying it repeatedly captures the cyclic nature of multiplying by $x$? In particular, what should $U^r|y\rangle$ be?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">If the entire purpose of this operator is to directly encode the classical arithmetic of "multiplying by $x$ modulo $N$", what should the output state be when you apply $U$ to an arbitrary input state $|y\rangle$? How would you complete this equation?</div>
+                </div>
+            </div>
+            <div class="math-display" style="margin-top: 1.2rem; margin-bottom: 0;">
+                <p>$$U|y\rangle = |\text{?}\rangle$$</p>
+            </div>
+        </div>
+
+        <p>We define our unitary operator such that:</p>
+
+        <div class="math-display">
+            <p>$$U|y\rangle = |xy \pmod{N}\rangle$$</p>
+        </div>
+
+        <p><em>(Note: to keep it strictly unitary, we usually say it does this for $0 \leq y < N$, and acts as the identity for $y \ge N$, but we only really care about the $0$ to $N-1$ subspace).</em></p>
+
+        <p>Now, let's connect this back to what we already know. The quantum phase estimation algorithm is a machine that takes a unitary operator $U$ and one of its eigenvectors $|u\rangle$, and spits out the phase $\theta$ of its corresponding eigenvalue $e^{2\pi i \theta}$.</p>
+
+        <p>If we want to use QPE to find the order $r$, our next mission is to figure out the <strong>eigenvalues</strong> and <strong>eigenvectors</strong> of this specific $U$.</p>
+
+        <p>Let's start with the eigenvalues. We established earlier that applying $U$ exactly $r$ times brings a state back to itself. In other words, on this relevant subspace:</p>
+
+        <div class="math-display">
+            <p>$$U^r = I$$</p>
+        </div>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">Suppose $|u_s\rangle$ is an eigenvector of $U$ with eigenvalue $\lambda$, meaning $U|u_s\rangle = \lambda|u_s\rangle$. Using the fact that $U^r = I$, what are the possible values for the eigenvalue $\lambda$?</div>
+                    <div class="hint"><em>(Hint: Since there are $r$ distinct roots of unity, try using an index, let's call it $s$ (where $0 \leq s < r$), to label the different possible eigenvalues $\lambda_s$.)</em></div>
+                </div>
+            </div>
+        </div>
+
+        <p>$\lambda^r = e^{2\pi i \theta r} = 1$ is exactly the equation we need to solve.</p>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">If we set $2\pi \theta r$ equal to the general expression for <em>any</em> full rotation (let's use an integer $s$ to count the rotations, where $s \in \{0, 1, \dots, r-1\}$), what does that make our phase $\theta$? Once we have $\theta$, what is the general form for our $r$ distinct eigenvalues $\lambda_s$?</div>
+                </div>
+            </div>
+        </div>
+
+        <p>Make sure you see why $\theta=\frac{s}{r}$ and $\lambda_s = e^{2\pi i \frac{s}{r}}$.</p>
+
+        <p>Now we have our eigenvalues. If we can feed an eigenvector corresponding to one of these eigenvalues into the quantum phase estimation algorithm, it will spit out $\frac{s}{r}$. (And once we have the fraction $\frac{s}{r}$, we can use some classical number theory to extract $r$, which is our ultimate goal).</p>
+
+        <p>But to do that, we need to know what these eigenvectors $|u_s\rangle$ actually look like.</p>
+
+        <p>We know the operator $U$ just steps us through the cycle: $U|1\rangle = |x\rangle$, $U|x\rangle = |x^2\rangle$, ..., $U|x^{r-1}\rangle = |1\rangle$ (all modulo $N$).</p>
+
+        <p>We want to construct an eigenvector $|u_s\rangle$ such that applying $U$ just pulls out a global phase of $e^{2\pi i \frac{s}{r}}$, meaning $U|u_s\rangle = e^{2\pi i \frac{s}{r}} |u_s\rangle$.</p>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">If you were to build $|u_s\rangle$ as a superposition of the basis states in our cycle ($|1\rangle, |x\rangle, |x^2\rangle, \dots, |x^{r-1}\rangle$), what coefficients (or weights) would you put in front of each state so that shifting them all forward by one step is mathematically identical to multiplying the whole state by that specific phase $e^{2\pi i \frac{s}{r}}$? Try writing $|u_s\rangle=\alpha_0 |x^0\rangle+\alpha_1|x^1\rangle+\dots+\alpha_{r-1}|x^{r-1}\rangle$ and investigate the desired conditions to figure out what the coefficients $\alpha_{i}$ should be.</div>
+                    <div class="hint"><em>(Hint: Don't worry about normalization constants just yet, just focus on the relative phases of the terms in the superposition!)</em></div>
+                </div>
+            </div>
+        </div>
+
+        <p>Make sure you see why $U|u_s\rangle=\alpha_0 U|x^0\rangle+\alpha_1 U|x^1\rangle+\dots+\alpha_{r-1} U|x^{r-1}\rangle = \alpha_{r-1} |x^0\rangle+\alpha_0|x^1\rangle+\dots+\alpha_{r-2}|x^{r-1}\rangle$ and note that we also want $U|u_s\rangle=e^{2\pi is/r}|u_s\rangle$.</p>
+
+        <p>Hence, we choose coefficients such that $\alpha_{r-1}=e^{2\pi is/r} \alpha_0$, $\alpha_0=e^{2\pi is/r} \alpha_1$, $\alpha_1=e^{2\pi is/r} \alpha_2$ etc.</p>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">If we arbitrarily set $\alpha_0 = 1$ (we can worry about the overall normalization constant later), you can use those equations to find a pattern for every other coefficient. What is the explicit formula for the general coefficient $\alpha_k$ in terms of $s$, $r$, and $k$? Once you have that, write down the full, normalized expression for the eigenvector $|u_s\rangle$. (Keep in mind there are $r$ mutually orthogonal terms in this superposition, so what should the normalization factor be?)</div>
+                </div>
+            </div>
         </div>
 
         <div class="bottom-nav">
