@@ -337,6 +337,35 @@
             </div>
         </div>
 
+        <p>Make sure you see why the general term is $\alpha_k=e^{-2\pi i s k / r}$.</p>
+
+        <p>So, we can write the eigenvector beautifully as:</p>
+
+        <div class="math-display">
+            <p>$$|u_s\rangle = \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1} e^{-2\pi i s k / r} |x^k \pmod{N}\rangle$$</p>
+        </div>
+
+        <div class="section-heading">The Catch-22</div>
+
+        <p>We now have our unitary $U$ and its eigenvectors $|u_s\rangle$. If we could feed just one of these $|u_s\rangle$ states into the second register of a quantum phase estimation circuit, the top register would measure the phase $\frac{s}{r}$. From there, we could easily classical-post-process our way to finding $r$.</p>
+
+        <p>But we have hit a massive roadblock: To construct the state $|u_s\rangle$ to plug into the circuit, we need to know $r$ in advance. But finding $r$ is the entire reason we are running the algorithm in the first place!</p>
+
+        <p>We cannot prepare $|u_s\rangle$. We need a workaround.</p>
+
+        <div class="think-break">
+            <div class="think-break-label">Pause and think</div>
+            <div class="think-break-inner">
+                <div class="think-break-text">
+                    <div class="question">What happens if you take your formula for $|u_s\rangle$ and sum it up over <em>all</em> possible values of $s$? In other words, mathematically evaluate this sum:</div>
+                    <div class="math-display" style="margin: 1rem 0; background: transparent; border-left: none; padding: 0.5rem 0;">
+                        <p>$$\sum_{s=0}^{r-1} |u_s\rangle$$</p>
+                    </div>
+                    <div class="hint"><em>(Hint: Substitute your expression for $|u_s\rangle$ into the sum, swap the order of the summations so you are summing over $s$ first, and see what happens to the coefficients. What is the sum of a full set of roots of unity for $k > 0$, and what happens when $k = 0$?)</em> What state does this sum collapse into?</div>
+                </div>
+            </div>
+        </div>
+
         <div class="bottom-nav">
             <span>← Phase Estimation</span>
             <span>Factoring →</span>

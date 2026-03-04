@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QC — Quantum Computing</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@300;400&display=swap');
 
@@ -181,6 +190,11 @@
         <p>There is something deeply beautiful about a good explanation. Anyone who has read the <a href="https://www.feynmanlectures.caltech.edu/">Feynman Lectures on Physics</a> knows the feeling: a concept you once found opaque suddenly seems magical.</p>
         <p>This site is my attempt to create that experience for quantum computing. It is inspired by the way <a href="https://www.youtube.com/@3blue1brown">3Blue1Brown</a> helps you visualize concepts before you formalize them, the elegance that <a href="https://www.youtube.com/@Aleph0">Aleph 0</a> finds in abstract mathematics, and Scott Aaronson's conviction in <em>Quantum Computing Since Democritus</em> that:</p>
         <blockquote>Quantum mechanics is a beautiful generalization of the laws of probability: a generalization based on the 2-norm rather than the 1-norm, and on complex numbers rather than nonneg­ative real numbers. It can be studied completely separately from its applications to physics (and indeed, doing so provides a good starting point for learning the physical applications later). This generalized probability theory leads naturally to a new model of computation – the quantum computing model – that challenges ideas about computation once considered a priori, and that theoretical computer scientists might have been driven to invent for their own purposes, even if there were no relation to physics. In short, while quantum mechanics was invented a century ago to solve technical problems in physics, today it can be fruitfully explained from an extremely different perspective: as part of the history of ideas, in math, logic, computation, and philosophy, about the limits of the knowable.</blockquote>
+        <p>As the Aaronson quote above suggests — and as I have experienced myself — the way quantum theory is taught at university is unfortunate, in a few ways.</p>
+        <p>First, it makes the implicit leap that quantum theory = quantum mechanics (physics). As I see it, <em>quantum theory</em> spans not only physics but also computational complexity theory, information theory, the theory of computation, and philosophy, among other fields. But even the physics part alone is problematic: you are told that a quantum state is a vector in a Hilbert space, i.e. $\psi \in \mathcal{H}$. This is flat-out wrong. A quantum state is in fact a map from a Hilbert space to itself, $\rho: \mathcal{H} \to \mathcal{H}$, satisfying certain properties (it is positive, linear, and trace-class). The standard presentation $\psi \in \mathcal{H}$ is plainly false. And this says nothing of the "shut up and calculate" pedagogy of most physics courses, where you solve Schrödinger's equation for various potentials without ever understanding <em>why</em>, or what is really going on.</p>
+        <p>Second, quantum algorithms like Shor's or Grover's are typically taught by handing you a circuit of quantum gates and asking you to verify that it works. One is left with the nagging feeling: <em>I can see how this circuit works now that I know what it is — but how would anyone have come up with it in the first place?</em> It is in fact deeply illuminating to derive these algorithms from first principles yourself. I did exactly this for the quantum Fourier transform, phase estimation, and others — and in doing so, I was able to grasp not just the mechanics but the <em>nuance</em>: why each detail is the way it is, and why it could not have been otherwise. This is more mentally taxing than reading through lecture notes and accepting what is shown, but the knowledge really sticks with you.</p>
+        <p>Inspired by my own experience of learning this unconventional way, I built this site to help you do the same. It includes guided derivations of the key algorithms for you to think through yourself, and simulations of quantum circuits where you can play around and see what happens.</p>
+        <p>Quantum computing is a beautiful subject. Learning it from first principles makes that elegance shine out.</p>
     </div>
 
     <div class="section">
